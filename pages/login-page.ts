@@ -13,6 +13,7 @@ export class LoginPage {
     readonly inputLogin: Locator;
     readonly signInConfirmation: Locator;
     readonly loginToYourAccount: Locator;
+    readonly errorLoginMessage: Locator;
 
     constructor(page: Page) {
         this.page = page;
@@ -24,9 +25,10 @@ export class LoginPage {
         this.inputLogin = page.getByRole('button', { name: 'Login' });
         this.signInConfirmation = page.getByText('Logged in as GabiTest');
         this.loginToYourAccount = page.getByText('Login to your account');
+        this.errorLoginMessage = page.getByText('Your email or password is incorrect!');
     }
 
-    async loginCorrect(email: string, password: string) {
+    async loginCredentials(email: string, password: string) {
         await this.singupButton.click();
         await expect(this.loginToYourAccount).toBeVisible();
         await this.inputEmail.fill(email);
@@ -36,5 +38,10 @@ export class LoginPage {
 
     async checkSignInConfirmation() {
         await expect(this.signInConfirmation).toBeVisible();
+    }
+
+    async checkErrorMessage() {
+        const errorLoginMessage = this.page.getByText('Your email or password is incorrect!');
+        await expect(this.errorLoginMessage).toBeVisible();
     }
 }

@@ -15,6 +15,12 @@ test.afterEach(async ({ page }) => {
 
 test('login user', async ({ page }) => {
     const loginPage = new LoginPage(page);
-        await loginPage.loginCorrect('test@gabitest.com', 'Test@123');
+        await loginPage.loginCredentials('test@gabitest.com', 'Test@123');
         await loginPage.checkSignInConfirmation();
+});
+
+test('login user with incorrect credentials', async ({ page }) => {
+    const loginPage = new LoginPage(page);
+    await loginPage.loginCredentials('iikcwcw@erve.com', 'Test@123');
+    await loginPage.checkErrorMessage();
 });
