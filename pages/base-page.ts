@@ -1,4 +1,4 @@
-import { type Locator, type Page } from '@playwright/test';
+import { expect, type Locator, type Page } from '@playwright/test';
 
 export class BasePage {
 
@@ -17,6 +17,8 @@ export class BasePage {
 
     async navigateTo(url: string) {
         await this.page.goto(url);
+        await this.acceptCookies();
+        await expect(this.page.getByRole('link', { name: 'Website for automation' })).toBeVisible();
     }
 
     async acceptCookies() {
