@@ -3,101 +3,101 @@ import { BasePage } from './base-page';
 import { expect } from '@playwright/test';
 
 export class RegisterPage {
-
     protected page: Page;
     protected basepage: BasePage;
-    readonly singupButton: Locator;
+    readonly signupButton: Locator;
     readonly registerButton: Locator;
-    readonly inputName: Locator;
-    readonly inputEmail: Locator;
-    readonly inputPassword: Locator;
-    readonly inputDay: Locator;
-    readonly inputMonth: Locator;
-    readonly inputYear: Locator;
-    readonly inputNewsletter: Locator;
-    readonly inputSpecialOffers: Locator;
-    readonly inputFirstName: Locator;
-    readonly inputLastName: Locator;
-    readonly inputCompany: Locator;
-    readonly inputAddress: Locator;
-    readonly inputCountry: Locator;
-    readonly inputState: Locator;
-    readonly inputCity: Locator;
-    readonly inputZipcode: Locator;
-    readonly inputMobile: Locator;
-    readonly inputCreateAccount: Locator;
-    readonly inputDeleteAccount: Locator;
-    readonly continueButton: Locator;
-    readonly inputSignup: Locator;
-    readonly inputLogin: Locator;
-    readonly enterAccountInformation: Locator;
-    readonly accountCreatedConfirmationText: Locator;
-    readonly accountDeletedConfirmation: Locator;
-    readonly signInConfirmation: Locator;
-
+    readonly inputFields: Record<string, Locator>;
+    readonly checkboxes: Record<string, Locator>;
+    readonly selectFields: Record<string, Locator>;
+    readonly confirmationTexts: Record<string, Locator>;
+    readonly buttons: Record<string, Locator>;
+    readonly inputDeleteAccount: Locator;  // Asegúrate de tener este locator
+    readonly accountDeletedConfirmation: Locator;  // Asegúrate de tener este locator
+    readonly continueButton: Locator;  // Asegúrate de tener este locator
 
     constructor(page: Page) {
         this.page = page;
         this.basepage = new BasePage(page);
-        this.singupButton = page.getByRole('link', { name: ' Signup / Login' });
+        this.signupButton = page.getByRole('link', { name: ' Signup / Login' });
         this.registerButton = page.getByRole('button', { name: 'Signup' });
-        this.inputName = page.getByRole('textbox', { name: 'Name' });
-        this.inputEmail = page.locator('form').filter({ hasText: 'Signup' }).getByPlaceholder('Email Address');
-        
-        this.inputPassword = page.getByRole('textbox', { name: 'Password *' });
-        this.inputDay = page.locator('#days');
-        this.inputMonth = page.locator('#months');
-        this.inputYear = page.locator('#years');
-        this.inputNewsletter = page.getByRole('checkbox', { name: 'Sign up for our newsletter!' });
-        this.inputSpecialOffers = page.getByRole('checkbox', { name: 'Receive special offers from' });
-        this.inputFirstName = page.getByRole('textbox', { name: 'First name *' });
-        this.inputLastName = page.getByRole('textbox', { name: 'Last name *' });
-        this.inputCompany = page.getByRole('textbox', { name: 'Company', exact: true });
-        this.inputAddress = page.getByRole('textbox', { name: 'Address * (Street address, P.' });
-        this.inputCountry = page.getByLabel('Country *');
-        this.inputState = page.getByRole('textbox', { name: 'State *' });
-        this.inputCity = page.getByRole('textbox', { name: 'City * Zipcode *' });
-        this.inputZipcode = page.locator('#zipcode');
-        this.inputMobile = page.getByRole('textbox', { name: 'Mobile Number *' });
-        this.inputCreateAccount = page.getByRole('button', { name: 'Create Account' });
-        this.inputDeleteAccount = page.getByRole('link', { name: ' Delete Account' });
-        this.continueButton = page.getByRole('link', { name: 'Continue' });
-        this.enterAccountInformation = page.getByText('Enter Account Information');
-        this.accountCreatedConfirmationText = page.getByText('ACCOUNT CREATED!');
-        this.signInConfirmation = page.getByText('Logged in as GabiTest');
+
+        this.inputFields = {
+            name: page.getByRole('textbox', { name: 'Name' }),
+            email: page.locator('form').filter({ hasText: 'Signup' }).getByPlaceholder('Email Address'),
+            password: page.getByRole('textbox', { name: 'Password *' }),
+            firstName: page.getByRole('textbox', { name: 'First name *' }),
+            lastName: page.getByRole('textbox', { name: 'Last name *' }),
+            company: page.getByRole('textbox', { name: 'Company', exact: true }),
+            address: page.getByRole('textbox', { name: 'Address * (Street address, P.' }),
+            state: page.getByRole('textbox', { name: 'State *' }),
+            city: page.getByRole('textbox', { name: 'City * Zipcode *' }),
+            zipcode: page.locator('#zipcode'),
+            mobile: page.getByRole('textbox', { name: 'Mobile Number *' })
+        };
+
+        this.checkboxes = {
+            newsletter: page.getByRole('checkbox', { name: 'Sign up for our newsletter!' }),
+            specialOffers: page.getByRole('checkbox', { name: 'Receive special offers from' })
+        };
+
+        this.selectFields = {
+            day: page.locator('#days'),
+            month: page.locator('#months'),
+            year: page.locator('#years'),
+            country: page.getByLabel('Country *')
+        };
+
+        this.confirmationTexts = {
+            enterAccountInfo: page.getByText('Enter Account Information'),
+            accountCreated: page.getByText('ACCOUNT CREATED!'),
+            loggedIn: page.getByText('Logged in as GabiTest'),
+            accountDeleted: page.getByText('ACCOUNT DELETED!')
+        };
+
+        this.buttons = {
+            createAccount: page.getByRole('button', { name: 'Create Account' }),
+            deleteAccount: page.getByRole('link', { name: ' Delete Account' }),
+            continue: page.getByRole('link', { name: 'Continue' })
+        };
+
+        // Asegúrate de que estos elementos estén correctamente definidos:
+        this.inputDeleteAccount = page.locator('selector_del_boton_de_eliminar_cuenta');  // Asegúrate de que el selector sea el correcto
         this.accountDeletedConfirmation = page.getByText('ACCOUNT DELETED!');
-        
+        this.continueButton = page.getByRole('link', { name: 'Continue' });
     }
-    async signUpUserFiller() {
 
-        await this.singupButton.click();
-        await this.inputName.fill('GabiTest');
-        await this.inputEmail.fill('gabitest324@gabitest.com');
+    async signUpUser(name: string, email: string) {
+        await this.signupButton.click();
+        await this.inputFields.name.fill(name);
+        await this.inputFields.email.fill(email);
         await this.registerButton.click();  
-        await expect(this.enterAccountInformation).toBeVisible();
-
+        await expect(this.confirmationTexts.enterAccountInfo).toBeVisible();
     }
 
-    async registerUserFiller() {
-        await this.inputPassword.fill('Test@123');
-        await this.inputDay.selectOption('1');
-        await this.inputMonth.selectOption('1');
-        await this.inputYear.selectOption('2000');
-        await this.inputNewsletter.check();
-        await this.inputSpecialOffers.check();
-        await this.inputFirstName.fill('GabiFirstName');
-        await this.inputLastName.fill('GabiLastName');
-        await this.inputCompany.fill('GabiCompany');
-        await this.inputAddress.fill('GabiAddress');
-        await this.inputCountry.selectOption('Singapore');
-        await this.inputState.fill('Westminster system');
-        await this.inputCity.fill('Singapore');
-        await this.inputZipcode.fill('999077');
-        await this.inputMobile.fill('12345678');
-        await this.inputCreateAccount.click();
-        await expect(this.accountCreatedConfirmationText).toBeVisible();
-        await this.continueButton.click();
-        await expect(this.signInConfirmation).toBeVisible();
+    async registerUser(password: string, birthDate: { day: string, month: string, year: string }, firstName: string, lastName: string, company: string, address: string, state: string, city: string, zipcode: string, mobile: string, country: string) {
+        await this.inputFields.password.fill(password);
+        await this.selectFields.day.selectOption(birthDate.day);
+        await this.selectFields.month.selectOption(birthDate.month);
+        await this.selectFields.year.selectOption(birthDate.year);
+        await this.checkboxes.newsletter.check();
+        await this.checkboxes.specialOffers.check();
+
+        await this.inputFields.firstName.fill(firstName);
+        await this.inputFields.lastName.fill(lastName);
+        await this.inputFields.company.fill(company);
+        await this.inputFields.address.fill(address);
+        await this.inputFields.state.fill(state);
+        await this.inputFields.city.fill(city);
+        await this.inputFields.zipcode.fill(zipcode);
+        await this.inputFields.mobile.fill(mobile);
+
+        await this.selectFields.country.selectOption(country);
+
+        await this.buttons.createAccount.click();
+        await expect(this.confirmationTexts.accountCreated).toBeVisible();
+        await this.buttons.continue.click();
+        await expect(this.confirmationTexts.loggedIn).toBeVisible();
     }
 
     async deleteAccount() {
