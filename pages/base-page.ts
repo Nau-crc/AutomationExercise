@@ -1,11 +1,8 @@
 import { expect, type Locator, type Page } from '@playwright/test';
 
 export class BasePage {
-
     protected page: Page;
     readonly locator: Locator;
-
-
 
     constructor(page: Page) {
         this.page = page;
@@ -23,7 +20,7 @@ export class BasePage {
 
     async acceptCookies() {
         const acceptCookies = this.page.getByRole('button', { name: 'Consent' });
-
+        
         if (await acceptCookies.isVisible()) {
         await acceptCookies.click();
         }

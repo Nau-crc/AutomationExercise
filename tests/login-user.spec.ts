@@ -15,12 +15,13 @@ test.afterEach(async ({ page }) => {
 
 test('login user', async ({ page }) => {
     const loginPage = new LoginPage(page);
-        await loginPage.loginCredentials('test@gabitest.com', 'Test@123');
-        await loginPage.checkSignInConfirmation();
+    
+    await loginPage.login('test@gabitest.com', 'Test@123');
+    await expect(page.getByText('Logged in as GabiTest')).toBeVisible();
 });
 
 test('login user with incorrect credentials', async ({ page }) => {
     const loginPage = new LoginPage(page);
-    await loginPage.loginCredentials('iikcwcw@erve.com', 'Test@123');
-    await loginPage.checkErrorMessage();
+    await loginPage.login('iikcwcw@erve.com', 'Test@123');
+    await expect(page.getByText('Your email or password is incorrect!')).toBeVisible();
 });
