@@ -14,6 +14,7 @@ export class LoginPage {
     readonly signInConfirmation: Locator;
     readonly loginToYourAccount: Locator;
     readonly errorLoginMessage: Locator;
+    readonly logoutButton: Locator;
 
     constructor(page: Page) {
         this.page = page;
@@ -26,6 +27,7 @@ export class LoginPage {
         this.signInConfirmation = page.getByText('Logged in as GabiTest');
         this.loginToYourAccount = page.getByText('Login to your account');
         this.errorLoginMessage = page.getByText('Your email or password is incorrect!');
+        this.logoutButton = page.getByRole('link', { name: 'Logout' });
     }
 
     async loginCredentials(email: string, password: string) {
@@ -43,5 +45,10 @@ export class LoginPage {
     async checkErrorMessage() {
         const errorLoginMessage = this.page.getByText('Your email or password is incorrect!');
         await expect(this.errorLoginMessage).toBeVisible();
+    }
+
+    async logout() {
+        await this.logoutButton.click();
+        await expect(this.singupButton).toBeVisible();
     }
 }

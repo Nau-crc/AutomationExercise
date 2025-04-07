@@ -24,3 +24,10 @@ test('login user with incorrect credentials', async ({ page }) => {
     await loginPage.loginCredentials('iikcwcw@erve.com', 'Test@123');
     await loginPage.checkErrorMessage();
 });
+
+test('Logout user', async ({ page }) => {
+    const loginPage = new LoginPage(page);
+    await loginPage.loginCredentials('test@gabitest.com', 'Test@123');
+    await loginPage.checkSignInConfirmation();
+    await loginPage.logout();
+});
