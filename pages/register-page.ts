@@ -35,7 +35,6 @@ export class RegisterPage {
     readonly accountDeletedConfirmation: Locator;
     readonly signInConfirmation: Locator;
 
-
     constructor(page: Page) {
         this.page = page;
         this.basepage = new BasePage(page);
@@ -62,20 +61,16 @@ export class RegisterPage {
         this.inputCreateAccount = page.getByRole('button', { name: 'Create Account' });
         this.inputDeleteAccount = page.getByRole('link', { name: ' Delete Account' });
         this.continueButton = page.getByRole('link', { name: 'Continue' });
-        this.enterAccountInformation = page.getByText('Enter Account Information');
         this.accountCreatedConfirmationText = page.getByText('ACCOUNT CREATED!');
         this.signInConfirmation = page.getByText('Logged in as GabiTest');
         this.accountDeletedConfirmation = page.getByText('ACCOUNT DELETED!');
-        
     }
-    async signUpUserFiller() {
 
+    async signUpUserFiller(name: string, password: string) {
         await this.singupButton.click();
-        await this.inputName.fill('GabiTest');
-        await this.inputEmail.fill('gabitest324@gabitest.com');
+        await this.inputName.fill(name);
+        await this.inputEmail.fill(password);
         await this.registerButton.click();  
-        await expect(this.enterAccountInformation).toBeVisible();
-
     }
 
     async registerUserFiller() {
