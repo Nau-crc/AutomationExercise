@@ -5,10 +5,11 @@ export class BasePage {
     protected page: Page;
     readonly locator: Locator;
 
-
+    readonly testCasesButton: Locator;
 
     constructor(page: Page) {
         this.page = page;
+        this.testCasesButton = page.getByRole('link', { name: ' Test Cases' })
     }
 
     async close() {
@@ -28,4 +29,11 @@ export class BasePage {
         await acceptCookies.click();
         }
     }
+
+    async testCasesClick() {
+        await this.testCasesButton.click();
+        await expect(this.page.locator('b')).toBeVisible();
+    }
+
+
 }
