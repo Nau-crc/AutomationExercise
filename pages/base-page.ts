@@ -6,10 +6,12 @@ export class BasePage {
     readonly locator: Locator;
 
     readonly testCasesButton: Locator;
+    readonly productsButton: Locator;
 
     constructor(page: Page) {
         this.page = page;
-        this.testCasesButton = page.getByRole('link', { name: ' Test Cases' })
+        this.testCasesButton = page.getByRole('link', { name: ' Test Cases' });
+        this.productsButton =  page.getByRole('link', { name: ' Products' });
     }
 
     async close() {
@@ -33,6 +35,11 @@ export class BasePage {
     async testCasesClick() {
         await this.testCasesButton.click();
         await expect(this.page.locator('b')).toBeVisible();
+    }
+
+    async productsClick() {
+        await this.productsButton.click();
+        await expect(this.page.getByRole('heading', { name: 'All Products' })).toBeVisible();
     }
 
 
